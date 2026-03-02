@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ひさ家 布施店 - お客様アンケート</title>
+    <script>
+        /* 言語自動リダイレクト（日・英のみ） */
+        (function() {
+            if (window.location.search.includes('noredirect=true')) return;
+            const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
+            if (userLang.includes('en')) {
+                window.location.href = 'index_en.html?noredirect=true';
+            }
+        })();
+    </script>
+    <style>
+        body { font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif; text-align: center; background-color: #F4F7F9; color: #333; padding: 20px; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { max-width: 500px; width: 100%; border-top: 5px solid #E63946; padding: 40px 20px; border-radius: 12px; background: #ffffff; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); box-sizing: border-box; }
+        .lang-selector { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        .lang-btn { padding: 8px 20px; font-size: 0.85rem; border: 1px solid #ddd; border-radius: 20px; background: #fff; color: #666; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+        .lang-btn.active { background-color: #E63946; color: #fff; border-color: #E63946; }
+        .shop-name { color: #E63946; font-weight: bold; margin-bottom: 5px; letter-spacing: 0.1em; font-size: 1.1rem; }
+        h1 { font-size: 1.2rem; margin-bottom: 25px; line-height: 1.5; color: #222; }
+        .step { display: none; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        .step.active { display: block; opacity: 1; }
+        .rating-list { display: flex; flex-direction: column; gap: 12px; margin: 25px 0; }
+        .rating-item { display: flex; align-items: center; padding: 18px 20px; background: #ffffff; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; }
+        .stars-display { font-size: 1.3rem; color: #E63946; margin-right: 15px; min-width: 90px; text-align: left; }
+        .sub-rating-container { margin: 20px 0; text-align: left; }
+        .sub-rating-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .sub-label { font-size: 1rem; font-weight: bold; color: #444; }
+        .sub-stars { font-size: 1.5rem; color: #ddd; cursor: pointer; user-select: none; }
+        .sub-stars span.active { color: #FFCC00; } 
+        .feedback-textarea { width: 100%; height: 120px; background-color: #F0F0F0; border: none; border-radius: 8px; padding: 15px; margin-bottom: 25px; resize: none; outline: none; }
+        .btn { display: inline-block; width: 100%; padding: 16px; background-color: #333; color: #fff; border-radius: 5px; font-weight: bold; font-size: 1.1rem; border: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="lang-selector">
+        <a href="index.html?noredirect=true" class="lang-btn active">日本語</a>
+        <a href="index_en.html?noredirect=true" class="lang-btn">English</a>
+    </div>
+    <div class="shop-name">焼き鳥・からあげ専門店 ひさ家 布施店</div>
+    <div id="step-1" class="step active">
+        <h1>本日はご来店<br>誠にありがとうございました</h1>
+        <p>今後のサービス向上のため、アンケートにご協力をお願いいたします。</p>
+        <button class="btn" onclick="nextStep(2)">次へ</button>
+    </div>
+    <div id="step-2" class="step">
+        <h1>本日の満足度はいかがでしたか？</h1>
+        <div class="rating-list">
+            <div class="rating-item" onclick="handleRating(5)"><span class="stars-display">★★★★★</span>すごく満足</div>
+            <div class="rating-item" onclick="handleRating(4)"><span class="stars-display">★★★★</span>満足</div>
+            <div class="rating-item" onclick="handleRating(3)"><span class="stars-display">★★★</span>普通</div>
+            <div class="rating-item" onclick="handleRating(2)"><span class="stars-display">★★</span>やや不満</div>
+            <div class="rating-item" onclick="handleRating(1)"><span class="stars-display">★</span>不満</div>
+        </div>
+    </div>
+    <div id="step-3" class="step">
+        <p style="color:#888;">具体的な内容をお聞かせください</p>
+        <div class="sub-rating-container">
+            <div class="sub-rating-row"><span class="sub-label">料理の味</span><div class="sub-stars" data-item="food"><span onclick="setSubStar('food', 1)">★</span><span onclick="setSubStar('food', 2)">★</span><span onclick="setSubStar('food', 3)">★</span><span onclick="setSubStar('food', 4)">★</span><span onclick="setSubStar('food', 5)">★</span></div></div>
+            <div class="sub-rating-row"><span class="sub-label">接客サービス</span><div class="sub-stars" data-item="service"><span onclick="setSubStar('service', 1)">★</span><span onclick="setSubStar('service', 2)">★</span><span onclick="setSubStar('service', 3)">★</span><span onclick="setSubStar('service', 4)">★</span><span onclick="setSubStar('service', 5)">★</span></div></div>
+            <div class="sub-rating-row"><span class="sub-label">店内の清潔感</span><div class="sub-stars" data-item="clean"><span onclick="setSubStar('clean', 1)">★</span><span onclick="setSubStar('clean', 2)">★</span><span onclick="setSubStar('clean', 3)">★</span><span onclick="setSubStar('clean', 4)">★</span><span onclick="setSubStar('clean', 5)">★</span></div></div>
+        </div>
+        <textarea id="feedback-text" class="feedback-textarea" placeholder="ご意見・ご要望をお聞かせください"></textarea>
+        <button class="btn" id="submit-btn" onclick="submitFeedback()">投稿する</button>
+    </div>
+    <div id="step-4" class="step">
+        <h1 style="color:#E63946;">送信完了</h1>
+        <p>貴重なご意見ありがとうございました。</p>
+    </div>
+</div>
+<script>
+    let currentRating = 0;
+    function nextStep(n) { document.querySelectorAll('.step').forEach(s => s.classList.remove('active')); document.getElementById(`step-${n}`).classList.add('active'); }
+    function handleRating(r) { currentRating = r; if (r >= 4) { window.location.href = "https://g.page/r/Ceui-yxo_mrvEAE/review"; } else { nextStep(3); } }
+    function setSubStar(i, s) { const row = document.querySelector(`.sub-stars[data-item="${i}"]`); row.querySelectorAll('span').forEach((star, idx) => star.classList.toggle('active', idx < s)); }
+    function submitFeedback() { document.getElementById('submit-btn').textContent = "送信中..."; setTimeout(() => nextStep(4), 800); }
+</script>
+</body>
+</html>
